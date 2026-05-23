@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+      emailjs.init('oKpUrRYJuJXLN72vJ');
+    })();
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Maavi Production</title>
@@ -119,13 +125,13 @@
 
       <form
         class="grid gap-6 text-left"
-        onsubmit="event.preventDefault(); window.open('https://wa.me/917499088890?text=Hello%20Maavi%20Production,%20I%20want%20to%20book%20a%20photoshoot.', '_blank');"
+        onsubmit="sendBooking(event)"
       >
-        <input type="text" placeholder="Your Name" class="bg-[#151515] border border-gray-700 rounded-2xl px-5 py-4" />
+        <input id="name" type="text" placeholder="Your Name" class="bg-[#151515] border border-gray-700 rounded-2xl px-5 py-4" />
 
-        <input type="tel" placeholder="Mobile Number" class="bg-[#151515] border border-gray-700 rounded-2xl px-5 py-4" />
+        <input id="phone" type="tel" placeholder="Mobile Number" class="bg-[#151515] border border-gray-700 rounded-2xl px-5 py-4" />
 
-        <select class="bg-[#151515] border border-gray-700 rounded-2xl px-5 py-4 text-gray-400">
+        <select id="shootType" class="bg-[#151515] border border-gray-700 rounded-2xl px-5 py-4 text-gray-400">
           <option>Select Shoot Type</option>
           <option>Wedding Shoot</option>
           <option>Pre-Wedding Shoot</option>
@@ -134,7 +140,7 @@
           <option>Event Shoot</option>
         </select>
 
-        <textarea rows="5" placeholder="Tell us about your event" class="bg-[#151515] border border-gray-700 rounded-2xl px-5 py-4"></textarea>
+        <textarea id="message" rows="5" placeholder="Tell us about your event" class="bg-[#151515] border border-gray-700 rounded-2xl px-5 py-4"></textarea>
 
         <button type="submit" class="bg-yellow-400 text-black py-4 rounded-2xl font-bold text-lg">
           Submit Booking
@@ -182,5 +188,33 @@
     © 2026 Maavi Production • Professional Photography & Videography in Lucknow
   </footer>
 
+  <script>
+    function sendBooking(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const shootType = document.getElementById('shootType').value;
+      const message = document.getElementById('message').value;
+
+      emailjs.send('service_f8y7jgd', 'template_f7ehw9h', {
+        from_name: name,
+        phone_number: phone,
+        shoot_type: shootType,
+        message: message,
+        to_email: 'sachin.verma911@gmail.com'
+      }).then(function () {
+        alert('Booking request sent successfully!');
+
+        window.open(
+          'https://wa.me/917499088890?text=Hello%20Maavi%20Production,%20I%20want%20to%20book%20a%20photoshoot.',
+          '_blank'
+        );
+      }, function (error) {
+        alert('Failed to send booking request');
+        console.log(error);
+      });
+    }
+  </script>
 </body>
 </html>
